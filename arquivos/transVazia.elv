@@ -1,0 +1,12 @@
+>q0,q1,q2,q3,q4,*qf
+ab
+q0,a,q0
+q0,b,q0
+q0,E,q1
+q1,a,q2
+q2,a,qf
+q0,E,q3
+q3,b,q4
+q4,b,qf
+qf,a,qf
+qf,b,qf

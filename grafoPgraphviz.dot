@@ -1,0 +1,4 @@
+digraph a{">q0" -> ">q0"[label=<a>]
+">q0" -> "q1"[label=<b>]
+"q1" -> "| qf |"[label=<b>]
+}
