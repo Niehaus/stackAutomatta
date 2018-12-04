@@ -192,7 +192,7 @@ public class Principal extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		Parent root = FXMLLoader.load(getClass().getResource("TelaPrincipal.fxml"));
-		primaryStage.setTitle("GUI - TP1");
+		primaryStage.setTitle("GUI - TP1/TP2");
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();  		
 	}

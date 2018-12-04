@@ -184,7 +184,6 @@ public class Automata {
 		return retorno;
 	}
 	
-	
 	public boolean inicial(String estado) {
 		String dado = "" + estado;
 		if(states.contains(dado))

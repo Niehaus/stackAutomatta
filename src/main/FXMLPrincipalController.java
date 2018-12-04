@@ -46,6 +46,12 @@ public class FXMLPrincipalController extends Principal implements Initializable 
 	  private void acaoDoBotao(ActionEvent event) throws FileNotFoundException {
 		  System.out.println("Voce clicou no select..");
 		  Principal.fileselect();
+		  if(automata.isComPilha()) {
+	  			automTipo.setText("com Pilha ");
+	  		}
+	  		else {
+	  			automTipo.setText(" sem Pilha");
+	  		}
 		  FileInputStream input = new FileInputStream("..\\Apptomata\\grafoGerado.png");
 		  Image image = new Image(input);
 		  automato.setImage(image);
@@ -68,15 +74,6 @@ public class FXMLPrincipalController extends Principal implements Initializable 
   	@FXML
   	private void checkBox(ActionEvent event) {
   		//System.out.println("SELECIONEI" + afd.isSelected() + afn.isSelected());
-  		if(afd.isSelected()) {
-  			automTipo.setText(" AFD");
-  		}
-  		if(afn.isSelected()) {
-  			automTipo.setText(" AFN");
-  		}
-  		if (afd.isSelected() && afn.isSelected()){
-  			automTipo.setText(" ??");
-  		}
   		
   	}
   	
