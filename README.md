@@ -1,4 +1,4 @@
-<h3> stackAutomatta - TP2 Teoria  
+<h3> stackAutomatta - TP2 Teoria  </h3>
 
 **Integrantes do Grupo:**
  
