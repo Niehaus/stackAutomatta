@@ -79,10 +79,49 @@ public class Principal extends Application{
 			//le o alfabeto
 			linha = ler.readLine();
 			automata.alocaSimbolos(linha);
+			
+			bw.write("digraph a{");
+			while(linha != null) {
+				linha = ler.readLine();
+				if (linha == null) {
+					bw.append("}"); 
+		    		bw.close();
+		    		p.start2();
+		    		return false;
+				}
+				
+				linha = linha.replace("(", "");
+				linha = linha.replace(")", "");
+				dados = linha.split(",");
+				char letter = dados[1].charAt(0);
+				char desempilha = dados[2].charAt(0);
+				
+				String from = ""+dados[0];
+				String to = ""+ dados[4];
+				
+				if (automata.eFinal(dados[0]))
+					from="| "+from+" |";
+				if (automata.inicial(dados[0]))
+					from = ">"+from+"";
+				if (automata.eFinal(dados[4]))
+					to= "| "+to+" |";
+				if (automata.inicial(dados[4]))
+					to= ">" + to+"";
+				from = "\"" + from + "\"";
+				to = "\"" + to + "\"";
+				bw.append(from + " -> " + to + "[label=<" + "("+
+										letter+","+desempilha+","+dados[3]+")" + ">]\n");
+				
+				automata.novaStackRegra(dados[0], letter, desempilha, dados[3], dados[4]);
+				
+			}
+			
+			
 		} catch (IOException ex) {
 			System.out.print(ex);
 			return false;
 		}
+		System.out.println(automata.toString());
 		return true;
 	}
 	static public boolean normalOpen(String dir) {
