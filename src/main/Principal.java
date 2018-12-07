@@ -28,7 +28,6 @@ public class Principal extends Application{
 		//fileselect(); //sele��o do arquivo
 		
 		launch(args);
-		
 		//System.out.println(automata.regras.get(1).get(0).size());
 
 	}
@@ -93,10 +92,11 @@ public class Principal extends Application{
 				linha = linha.replace("(", "");
 				linha = linha.replace(")", "");
 				dados = linha.split(",");
+
+				String from = ""+dados[0];
 				char letter = dados[1].charAt(0);
 				char desempilha = dados[2].charAt(0);
 				
-				String from = ""+dados[0];
 				String to = ""+ dados[4];
 				
 				if (automata.eFinal(dados[0]))
@@ -121,7 +121,7 @@ public class Principal extends Application{
 			System.out.print(ex);
 			return false;
 		}
-		System.out.println(automata.toString());
+		
 		return true;
 	}
 	static public boolean normalOpen(String dir) {

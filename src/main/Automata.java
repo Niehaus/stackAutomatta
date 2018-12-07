@@ -16,10 +16,10 @@ class StackTransition{
 		this.destino = destino;
 	}
 	
-	public char getLeitura() {
+	public char getDesempilha() {
 		return desempilha;
 	}
-	public void setLeitura(char desempilha) {
+	public void setDesempilha(char desempilha) {
 		this.desempilha = desempilha;
 	}
 	public String getEmpilha() {
@@ -49,7 +49,7 @@ public class Automata {
 	private List<String> states;
 	private List<List<List<Integer>>> regras;
 	private List<List<List<StackTransition>>> stackRegras;
-	private Deque<Integer> stack = new ArrayDeque<Integer>();
+	private Deque<Character> stack = new ArrayDeque<Character>();
 	private boolean comPilha = false;
 	//[estados][simbolos][dest]
 	
@@ -142,7 +142,7 @@ public class Automata {
 				for (j = 0; j < stackRegras.get(i).size(); j++)
 					for (int k =0; k < stackRegras.get(i).get(j).size(); k++) {
 						retorno += "q" + i +",(" + alfabeto.charAt(j) +","+
-								stackRegras.get(i).get(j).get(k).getLeitura() +","+
+								stackRegras.get(i).get(j).get(k).getDesempilha() +","+
 								stackRegras.get(i).get(j).get(k).getEmpilha() + "),"+
 								stackRegras.get(i).get(j).get(k).getDestino()+"\n";
 					}
@@ -203,6 +203,7 @@ public class Automata {
 			else 
 				return aceita(0,palavra,0);
 		}catch(Exception ex) {
+			System.out.println(ex);
 			return false;
 		}
 	}
@@ -246,11 +247,11 @@ public class Automata {
 	
 	public boolean stackAceita(int atual, String palavra, int pos) throws Exception{
 		boolean retorno = false;
-		int aux;
-		
-		
-		if(finais.contains(atual) && palavra.length() == pos) {	//caso seja o estado seja final 
-			return true;										//e tenha chegado no final da palavra
+		StackTransition aux;
+		if (stackRegras.get(atual).get(alfabeto.length()-1).size() > 0) {
+			if (stack.isEmpty() && palavra.length() == pos)
+				return true;
+			
 		} else if(palavra.length() == pos) {					//caso tenha chegado no final da palavra mas 
 			return false;										//o estado não é final
 		}
@@ -258,28 +259,51 @@ public class Automata {
 		
 		char letraAtual= palavra.charAt(pos);
 		int codLetra = alfabeto.indexOf(letraAtual);
-		int nEstAlcancaveis = regras.get(atual).get(codLetra).size();
+		int nEstAlcancaveis = stackRegras.get(atual).get(codLetra).size();
 							//a partir do estado atual, lendo a letra atual consegue-se ir pra quais estados?
 		
+		System.out.println("nEstAlcancaveis: "+nEstAlcancaveis);
 		
-		for(int i = 0; i < regras.get(atual).get(0).size(); i++) {	//le nada da string
+		for(int i = 0; i < stackRegras.get(atual).get(0).size()-1; i++) {	//le nada da string
 			
-			aux = regras.get(atual).get(0).get(i);
-			retorno = aceita(aux,palavra,pos);
+			System.out.println("vaziaaaa");
+			aux = stackRegras.get(atual).get(0).get(i);
+			if (aux.getDesempilha() != 'E')
+				stack.pop();
+			if (!aux.getEmpilha().equals("E"))
+				empilha(aux.getEmpilha());
+			
+			retorno = stackAceita(aux.getDestino(),palavra,pos);
+			
 			if (retorno == true)
 				return retorno;
 		}
 		
 		//itera entre os estados disponiveis para a letra palavra[pos]
 		for(int i = 0; i < nEstAlcancaveis; i++) {
+			aux = stackRegras.get(atual).get(codLetra).get(i);
 			
-			aux = regras.get(atual).get(codLetra).get(i);
-			retorno = aceita(aux,palavra,pos + 1);
+			if (aux.getDesempilha() != 'E')
+				stack.pop();
+			if (!aux.getEmpilha().equals("E"))
+				empilha(aux.getEmpilha());
+			System.out.println("atual: " + atual + "   palavra[]: " + pos + "   pilha: " + stack);
+			retorno = stackAceita(aux.getDestino(),palavra,pos+1);
+			
 			if(retorno == true) {
 				break;
 			}
-		}	
+		}
+		
+		
+		
 		return retorno;
+	}
+	
+	private void empilha(String empilha) {
+		for (int i = 0; i < empilha.length(); i++) {
+			stack.push(empilha.charAt(i));
+		}
 	}
 	
 	public boolean inicial(String estado) {
